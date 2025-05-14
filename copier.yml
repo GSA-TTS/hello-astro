@@ -1,0 +1,15 @@
+_subdirectory: "templates/{{which_template}}"
+_answers_file: ".copier-answers.yml"
+_exclude:
+  - ".git"
+
+which_template:
+  type: str
+  help: "Select the Astro template to use:"
+  choices:
+    - astro-plain
+    - pages-site-gantry
+  default: astro-plain
+_tasks:
+- when: "{{ _copier_operation == 'copy' }}"
+  command: "git init ."
