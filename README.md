@@ -17,6 +17,8 @@ It's suitable for standalone use or composition with [other `GSA-TTS/hello-*` te
 - [git](https://git-scm.com/)
 
 ## Usage
+
+### Creating an application
 1. [Install uv](https://docs.astral.sh/uv/getting-started/installation/) (if you haven't already)
 2. Generate a new project...\
   ...from your local clone of the repository:
@@ -29,6 +31,23 @@ It's suitable for standalone use or composition with [other `GSA-TTS/hello-*` te
    ```
 3. Answer the prompts:
    - Select which Astro template to use (`astro-plain` or `pages-site-gantry`).
+
+### Updating the application later
+
+If you'd like to...
+
+- change your answers or 
+- incorporate improvements made after you copied this template
+
+...you can run the Copier `update` command: 
+
+1. Make sure that your destination folder contains no uncommitted changes 
+2. Update your destination folder from the template
+    ```
+    uvx copier update --trust <destination-folder>
+    ```
+
+To learn how updating works and what additional options are available, read [the Copier `update` documentation](https://copier.readthedocs.io/en/stable/updating/) .
 
 ## Tasks
 After copying, the following tasks are run automatically in the destination folder:
