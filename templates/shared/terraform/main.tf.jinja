@@ -1,0 +1,122 @@
+terraform {
+  required_providers {
+    cloudfoundry = {
+      source  = "cloudfoundry/cloudfoundry"
+      version = "1.5.0"
+    }
+  }
+}
+
+variable "env" {
+  type        = string
+  description = "The environment (e.g., staging, production)"
+}
+
+variable "cf_org_name" {
+  type        = string
+  description = "Cloud.gov organization name"
+}
+
+variable "cf_space_name" {
+  type        = string
+  description = "Cloud.gov space name"
+}
+
+variable "custom_domain_name" {
+  type        = string
+  default     = null
+  description = "The custom domain name to associate with the app. Leave as null to disable the domain service and use an *.app.cloud.gov route."
+}
+
+variable "host_name" {
+  type        = string
+  default     = null
+  description = "An optional hostname to prepend to either the custom domain name or app.cloud.gov."
+}
+
+variable "web_instances" {
+  type        = number
+  default     = 1
+  description = "The number of web process instances."
+}
+
+variable "web_memory" {
+  type        = string
+  default     = "256M"
+  description = "The amount of memory for each web process instance."
+}
+
+locals {
+  app_name = "{{ application_name }}"
+}
+
+data "archive_file" "src" {
+  type        = "zip"
+  source_dir  = "${path.module}/../.."
+  output_path = "${path.module}/dist/${local.app_name}.zip"
+  excludes = [
+    ".git*",
+    ".circleci/*",
+    ".bundle/*",
+    "node_modules/*",
+    "tmp/**/*",
+    "log/*",
+  ]
+}
+
+resource "cloudfoundry_app" "app" {
+  name       = "${local.app_name}-${var.env}"
+  space_name = var.cf_space_name
+  org_name   = var.cf_org_name
+
+  path             = data.archive_file.src.output_path
+  source_code_hash = data.archive_file.src.output_base64sha256
+  buildpacks       = ["staticfile_buildpack"]  # Adjust as needed for your application
+  strategy         = "rolling"
+
+  environment = {
+    # Add environment variables as needed
+  }
+
+  processes = [
+    {
+      type                       = "web"
+      instances                  = var.web_instances
+      memory                     = var.web_memory
+      # command = "..." # Add if needed
+    }
+  ]
+
+  # service_bindings, depends_on, etc. as needed
+}
+
+# Add domain and route modules as needed, using the input variables
+
+# Before setting var.custom_domain_name, ensure the ACME challenge record has been created:
+# See https://cloud.gov/docs/services/external-domain-service/#how-to-create-an-instance-of-this-service
+module "domain" {
+  count  = (var.custom_domain_name == null ? 0 : 1)
+  source = "github.com/gsa-tts/terraform-cloudgov//domain?ref=v2.3.0"
+
+  cf_org_name   = var.cf_org_name
+  cf_space      = var.cf_space_name
+  cdn_plan_name = "domain"
+  domain_name   = var.custom_domain_name
+  create_domain = true
+  app_ids       = [cloudfoundry_app.app.id]
+  host_name     = var.host_name
+  {% if manage_spaces %}
+  # depends_on line is required only for initial creation and destruction. It can be commented out for updates if you see unwanted cascading effects
+  depends_on = [module.app_space]
+  {% endif %}
+}
+
+module "app_route" {
+  count  = (var.custom_domain_name == null ? 1 : 0)
+  source = "github.com/gsa-tts/terraform-cloudgov//app_route?ref=v2.3.0"
+
+  cf_org_name   = local.cf_org_name
+  cf_space_name = var.cf_space_name
+  app_ids       = [cloudfoundry_app.app.id]
+  hostname      = coalesce(var.host_name, "${local.app_name}-${var.env}")
+}
