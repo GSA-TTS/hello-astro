@@ -9,6 +9,7 @@ which_template:
   choices:
     - astro-plain
     - pages-site-gantry
+    - astro-uswds
   default: astro-plain
 _tasks:
 - when: "{{ _copier_operation == 'copy' }}"
