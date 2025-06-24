@@ -5,12 +5,30 @@ _exclude:
 
 which_template:
   type: str
-  help: "Select the Astro template to use:"
+  help: "Select the Astro template to use"
   choices:
     - astro-plain
-    - pages-site-gantry
     - astro-uswds
-  default: astro-plain
-_tasks:
-- when: "{{ _copier_operation == 'copy' }}"
-  command: "git init ."
+    - pages-site-gantry
+  default: astro-uswds
+
+_message_after_copy: |
+    Your project "{{ _folder_name }}" has been created successfully!
+
+    Next steps:
+
+    1. Change directory to the project root:
+      $ cd {{ _folder_name}}
+
+    2. Install the NPM dependencies
+      $ npm install
+
+    3. Start the dev server
+      $ npm run dev
+
+    {% if which_template == "astro-uswds" -%}
+    4. Don't forget to build the USWDS assets!
+      $ npm run build
+
+    {% endif -%}
+    Happy coding!
