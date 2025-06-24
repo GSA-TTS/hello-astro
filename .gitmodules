@@ -3,4 +3,4 @@
 	url = https://github.com/cloud-gov/pages-site-gantry
 [submodule "templates/astro-uswds"]
 	path = templates/astro-uswds
-	url = git@github.com:GSA-TTS/astro-uswds.git
+	url = https://github.com/GSA-TTS/astro-uswds.git
