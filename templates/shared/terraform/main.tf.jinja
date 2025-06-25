@@ -7,9 +7,13 @@ terraform {
   }
 }
 
-variable "env" {
+variable "name" {
   type        = string
-  description = "The environment (e.g., staging, production)"
+  description = "A likely-unique name to be used for the app name and route hostname. Must be compatible with hostname requirements."
+  validation {
+    condition     = can(regex("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$", var.name)) && length(var.name) >= 3 && length(var.name) <= 63
+    error_message = "The name must contain only lowercase letters, numbers, and hyphens, must start and end with a letter or number, and be between 3 and 63 characters long."
+  }
 }
 
 variable "cf_org_name" {
@@ -58,7 +62,7 @@ data "cloudfoundry_space" "app_space" {
 data "archive_file" "src" {
   type        = "zip"
   source_dir  = "${path.module}/../.."
-  output_path = "${path.module}/dist/${local.app_name}.zip"
+  output_path = "${path.root}/dist/${var.name}.zip"
   excludes = [
     ".git*",
     ".circleci/*",
@@ -70,7 +74,7 @@ data "archive_file" "src" {
 }
 
 resource "cloudfoundry_app" "app" {
-  name       = "${local.app_name}-${var.env}"
+  name       = var.name
   space_name = var.cf_space_name
   org_name   = var.cf_org_name
 
@@ -119,5 +123,5 @@ module "app_route" {
   cf_org_name   = local.cf_org_name
   cf_space_name = var.cf_space_name
   app_ids       = [cloudfoundry_app.app.id]
-  hostname      = coalesce(var.host_name, "${local.app_name}-${var.env}")
+  hostname      = coalesce(var.host_name, var.name)
 }
