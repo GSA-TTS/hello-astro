@@ -9,8 +9,9 @@ It's suitable for standalone use or composition with [other `GSA-TTS/hello-*` te
 
 ## Features
 - **Multiple Astro templates:**
-  - astro-plain: Minimal Astro starter (default, for now)
-  - [pages-site-gantry](https://github.com/cloud-gov/pages-site-gantry): Advanced starter CI/CD, styled with the USWDS, integrated with PayloadCMS
+  - astro-plain: Minimal Astro starter
+  - [astro-uswds](https://github.com/GSA-TTS/astro-uswds): Styled with the U.S. Web Design System v3.0 ([USWDS](https://designsystem.digital.gov/)), amenable to the [21st Century IDEA Act](https://digital.gov/resources/delivering-digital-first-public-experience#what-does-it-mean-to-modernize-websites) requirements
+  - [pages-site-gantry](https://github.com/cloud-gov/pages-site-gantry): Advanced USWDS starter with CI/CD, integrated with [PayloadCMS](https://payloadcms.com/)
 
 ## Requirements
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) (for running Copier)
@@ -42,22 +43,46 @@ If you'd like to...
 ...you can run the Copier `update` command: 
 
 1. Make sure that your destination folder contains no uncommitted changes 
-2. Update your destination folder from the template
+2. Update your destination folder from the most recently-tagged version of the template:
     ```
     uvx copier update --trust <destination-folder>
     ```
+   If necessary, you can specify a specific tag or gitref:
+    ```
+    uvx copier update --trust -r GITREF <destination-folder>
+    ```
 
 To learn how updating works and what additional options are available, read [the Copier `update` documentation](https://copier.readthedocs.io/en/stable/updating/) .
-
-## Tasks
-After copying, the following tasks are run automatically in the destination folder:
-- `git init .`
 
 Follow instructions in the README.md in the destination folder to work with the new site.
 
 ## Directory Structure
 - `templates/astro-plain/`: Template for the minimal Astro starter
+- `templates/astro-uswds`: Minimal template styles with USWDS and oriented toward 21st Century IDEA requirements
 - `templates/pages-site-gantry/`: cg-pages' advanced starter with extra features, USWDS, etc.
+
+## Developing
+
+To ensure that copies reflect your local changes to the template, specify the HEAD revision on the command-line. For example...
+
+When copying:
+```
+uvx copier copy --trust -r HEAD <template-folder> <destination-folder>
+```
+
+When recopying:
+
+```
+uvx copier recopy --trust -r HEAD <destination-folder>
+```
+
+When updating: 
+
+```
+uvx copier update --trust -r HEAD <destination-folder>
+```
+
+There's [more information about this](https://copier.readthedocs.io/en/stable/faq/#while-developing-why-the-template-doesnt-include-dirty-changes) in the Copier docs.
 
 ## Contributing
 
