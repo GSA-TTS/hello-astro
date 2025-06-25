@@ -46,8 +46,13 @@ variable "web_memory" {
   description = "The amount of memory for each web process instance."
 }
 
-locals {
-  app_name = "{{ application_name }}"
+data "cloudfoundry_org" "app_org" {
+  name = var.cf_org_name
+}
+
+data "cloudfoundry_space" "app_space" {
+  name     = var.cf_space_name
+  org      = data.cloudfoundry_org.app_org.id
 }
 
 data "archive_file" "src" {
@@ -99,16 +104,12 @@ module "domain" {
   source = "github.com/gsa-tts/terraform-cloudgov//domain?ref=v2.3.0"
 
   cf_org_name   = var.cf_org_name
-  cf_space      = var.cf_space_name
+  cf_space      = data.cloudfoundry_space.app_space
   cdn_plan_name = "domain"
   domain_name   = var.custom_domain_name
   create_domain = true
   app_ids       = [cloudfoundry_app.app.id]
   host_name     = var.host_name
-  {% if manage_spaces %}
-  # depends_on line is required only for initial creation and destruction. It can be commented out for updates if you see unwanted cascading effects
-  depends_on = [module.app_space]
-  {% endif %}
 }
 
 module "app_route" {
