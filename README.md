@@ -58,7 +58,7 @@ Follow instructions in the README.md in the destination folder to work with the 
 
 ## Directory Structure
 - `templates/astro-plain/`: Template for the minimal Astro starter
-- `templates/astro-uswds`: Minimal template styles with USWDS and oriented toward 21st Century IDEA requirements
+- `templates/astro-uswds/`: Minimal template styles with USWDS and oriented toward 21st Century IDEA requirements
 - `templates/pages-site-gantry/`: cg-pages' advanced starter with extra features, USWDS, etc.
 
 ## Developing

@@ -1,8 +1,3 @@
-_subdirectory: "templates/{{which_template}}"
-_answers_file: ".copier-answers.yml"
-_exclude:
-  - ".git"
-
 which_template:
   type: str
   help: "Select the Astro template to use"
@@ -12,6 +7,8 @@ which_template:
     - pages-site-gantry
   default: astro-uswds
 
+# Note some files (eg terraform) are shared between the Astro templates via symlinks
+_subdirectory: "templates/{{which_template}}"
 _message_after_copy: |
     Your project "{{ _folder_name }}" has been created successfully!
 
