@@ -1,33 +1,36 @@
-which_template:
+application_name:
+  type: str
+  help: "Name of your Astro application"
+  default: "my-astro-app"
+
+
+template:
   type: str
   help: "Select the Astro template to use"
   choices:
     - astro-plain
     - astro-uswds
-    - pages-site-gantry
   default: astro-uswds
 
-_answers_file: .hello-astro-answers.yml
-
-# Note some files (eg terraform) are shared between the Astro templates via symlinks
-_subdirectory: "templates/{{which_template}}"
+_answers_file: ".copier-answers.{{application_name}}.yml"
+_subdirectory: "template"
 _message_after_copy: |
-    Your project "{{ _folder_name }}" has been created successfully!
+    Your app "{{ application_name }}" has been created successfully!
 
     Next steps:
 
-    1. Change directory to the project root:
-      $ cd {{ _folder_name}}
+    1. Change directory to the app root:
+      $ cd {{ _folder_name}}/apps/{{application_name}}
 
     2. Install the NPM dependencies
       $ npm install
 
-    3. Start the dev server
-      $ npm run dev
-
-    {% if which_template == "astro-uswds" -%}
-    4. Don't forget to build the USWDS assets!
+    {% if template == "astro-uswds" -%}
+    3. Build the USWDS assets!
       $ npm run build
 
     {% endif -%}
+    4. Start the dev server
+      $ npm run dev
+
     Happy coding!
