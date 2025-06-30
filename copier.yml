@@ -7,6 +7,8 @@ which_template:
     - pages-site-gantry
   default: astro-uswds
 
+_answers_file: .hello-astro-answers.yml
+
 # Note some files (eg terraform) are shared between the Astro templates via symlinks
 _subdirectory: "templates/{{which_template}}"
 _message_after_copy: |
