@@ -10,8 +10,7 @@ It's suitable for standalone use or composition with [other `GSA-TTS/hello-*` te
 ## Features
 - **Multiple Astro templates:**
   - astro-plain: Minimal Astro starter
-  - [astro-uswds](https://github.com/GSA-TTS/astro-uswds): Styled with the U.S. Web Design System v3.0 ([USWDS](https://designsystem.digital.gov/)), amenable to the [21st Century IDEA Act](https://digital.gov/resources/delivering-digital-first-public-experience#what-does-it-mean-to-modernize-websites) requirements
-  - [pages-site-gantry](https://github.com/cloud-gov/pages-site-gantry): Advanced USWDS starter with CI/CD, integrated with [PayloadCMS](https://payloadcms.com/)
+  - astro-uswds: Styled with the U.S. Web Design System v3.0 ([USWDS](https://designsystem.digital.gov/)), amenable to the [21st Century IDEA Act](https://digital.gov/resources/delivering-digital-first-public-experience#what-does-it-mean-to-modernize-websites) requirements
 
 ## Requirements
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) (for running Copier)
