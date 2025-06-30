@@ -45,11 +45,11 @@ If you'd like to...
 1. Make sure that your destination folder contains no uncommitted changes 
 2. Update your destination folder from the most recently-tagged version of the template:
     ```
-    uvx copier update --trust <destination-folder>
+    uvx copier update --trust -a .hello-astro-answers.yml <destination-folder>
     ```
    If necessary, you can specify a specific tag or gitref:
     ```
-    uvx copier update --trust -r GITREF <destination-folder>
+    uvx copier update --trust -a .hello-astro-answers.yml -r GITREF <destination-folder>
     ```
 
 To learn how updating works and what additional options are available, read [the Copier `update` documentation](https://copier.readthedocs.io/en/stable/updating/) .

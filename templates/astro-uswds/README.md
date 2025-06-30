@@ -13,6 +13,10 @@ This project strives to be compliant with requirements set by 21st Century IDEA 
 allows for user customization; and
 is mobile-friendly.
 
+## Development
+
+Note this repository was generated from [an upstream template](https://github.com/GSA-TTS/hello-astro); you may want to watch for new releases that [add features](https://github.com/GSA-TTS/hello-astro/releases) or [fix bugs](https://github.com/GSA-TTS/hello-astro/tags).
+
 ## Contributing
 Bug reports and pull requests are welcome on GitHub at https://github.com/gsa-tts/astro-uswds. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the code of conduct.
 
