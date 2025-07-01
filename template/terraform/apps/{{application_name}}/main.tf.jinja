@@ -61,7 +61,7 @@ data "cloudfoundry_space" "app_space" {
 
 data "archive_file" "src" {
   type        = "zip"
-  source_dir  = "${path.module}/../dist"
+  source_dir  = "${path.module}/../../../apps/{{application_name}}/dist"
   output_path = "${path.root}/dist/${var.name}.zip"
   excludes = [
     ".git*",
@@ -84,7 +84,8 @@ resource "cloudfoundry_app" "app" {
   strategy         = "rolling"
 
   environment = {
-    # Add environment variables as needed
+    # Add comma-separated environment variables as needed
+    foo = "bar"
   }
 
   processes = [
@@ -120,7 +121,7 @@ module "app_route" {
   count  = (var.custom_domain_name == null ? 1 : 0)
   source = "github.com/gsa-tts/terraform-cloudgov//app_route?ref=v2.3.0"
 
-  cf_org_name   = local.cf_org_name
+  cf_org_name   = var.cf_org_name
   cf_space_name = var.cf_space_name
   app_ids       = [cloudfoundry_app.app.id]
   hostname      = coalesce(var.host_name, var.name)
